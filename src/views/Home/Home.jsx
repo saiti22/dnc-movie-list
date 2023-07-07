@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { MovieService } from "../../api/MovieService";
+import MovieCard from "../../components/MovieCard/MovieCard";
 
-const Home = () => {
+const Home = ({searchValueProp}) => {
     const [movies, setMovies] = useState([])
 
     async function getMovies(){
@@ -10,21 +11,30 @@ const Home = () => {
         setMovies(results);
     }
 
+    async function getMovieSearch(movieName){
+        const {data: {results}} = await MovieService.searchMovies(movieName);
+
+        setMovies(results);
+    }
+
     useEffect(() => {      
         getMovies();
     },[])
 
     useEffect(() => {
-        console.log(movies);
-    })    
+        if(searchValueProp){
+            getMovieSearch(searchValueProp);
+        }else{
+            getMovies();
+        }
+    },[searchValueProp])    
 
   return (
     <section className="Home">
         {
-            movies.map(({id, title, vote_average}) => (
-                <div key={id}>
-                    <h1>{title}</h1>
-                    <h2>{vote_average}</h2>
+            movies.map((movie) => (
+                <div key={movie.id}>
+                    <MovieCard movieProp={movie}/>
                 </div>
             ))
         }
