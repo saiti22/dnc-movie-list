@@ -11,6 +11,7 @@ const Header = (props) => {
       <h1>DNC Movie List</h1>
       <form onSubmit={handleSubmit}>
         <input type="text" placeholder="Pesquise por filme..."/>
+        <button type="submit">Buscar</button>
       </form>      
     </header>
   )
